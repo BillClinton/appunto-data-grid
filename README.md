@@ -25,6 +25,14 @@ class Example extends Component {
 }
 ```
 
+## Dev Notes
+
+To get started, in one tab, run:
+`$ cd appunto-data-grid && npm start`
+
+And in another tab, run the create-react-app dev server:
+`$ cd appunto-data-grid/example && npm start`
+
 ## License
 
 MIT © [BillClinton](https://github.com/BillClinton)
