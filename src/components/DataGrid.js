@@ -1,28 +1,72 @@
-import React, { useState } from 'react'
-import { Box, Flex, Grid, IconButton, Text } from '@chakra-ui/core'
+import React, { useEffect, useState } from 'react'
+import { Box, Flex, Grid, IconButton, Text, useTheme } from '@chakra-ui/core'
 import usePagination from './usePagination'
 
-const DataGrid = ({ columns, data }) => {
+const getCurrentBreakpointIndex = (breakpoints) => {
+  const baseFontSize = window
+    .getComputedStyle(document.documentElement)
+    .fontSize.replace(/\D/g, '')
+  const emWidth = window.innerWidth / parseInt(baseFontSize)
+
+  const breakpoint = breakpoints.reduce((a, v) =>
+    emWidth > parseInt(a.replace(/\D/g, ''), 10) ? v : a
+  )
+
+  return breakpoints.indexOf(breakpoint)
+}
+
+const getSpan = (col, breakpointIndex) => {
+  return Array.isArray(col.span) ? col.span[breakpointIndex] : col.span
+}
+
+const getTotalSpan = (columns, breakpointIndex) => {
+  return columns.reduce((a, v) => {
+    return a + getSpan(v, breakpointIndex)
+  }, 0)
+}
+
+const DataGrid = ({ columns, data, ...rest }) => {
   const { next, prev, currentData, currentPage, maxPage } = usePagination(
     data,
     10
   )
   const [selectedId, setSelectedId] = useState(null)
-  const totalSpan = columns.reduce((total, rec) => total + rec.span, 0)
+  const [breakpointIndex, setBreakpointIndex] = useState(null)
+  const theme = useTheme()
 
-  const renderHeaderColumn = (text, start, span) => {
+  React.useEffect(() => {
+    setBreakpointIndex(getCurrentBreakpointIndex(theme.breakpoints))
+  }, [window.innerWidth])
+
+  useEffect(() => {
+    const handleResize = () => {
+      setBreakpointIndex(getCurrentBreakpointIndex(theme.breakpoints))
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const frameColor = rest.borderColor
+  const totalSpan = getTotalSpan(columns, breakpointIndex)
+
+  const renderHeaderColumn = (start, col) => {
     return (
       <Box
-        bg='gray.200'
+        bg={frameColor}
         px={2}
         py={2}
         minWidth={0}
-        gridColumn={`${start} / span ${span}`}
+        gridColumn={`${start === 1 ? '1' : 'auto'} / span ${getSpan(
+          col,
+          breakpointIndex
+        )}`}
         whiteSpace='nowrap'
         overflow='hidden'
         textOverflow='ellipsis'
+        key={`header-col-${start}`}
       >
-        {text}
+        {col.text}
       </Box>
     )
   }
@@ -36,7 +80,7 @@ const DataGrid = ({ columns, data }) => {
     return {}
   }
 
-  const renderDataColumn = (id, text, start, span, idx, key) => {
+  const renderDataColumn = (start, col, id, text, idx) => {
     return (
       <Box
         px={2}
@@ -45,12 +89,16 @@ const DataGrid = ({ columns, data }) => {
         borderBottom={1}
         borderBottomColor='gray.200'
         minWidth={0}
-        gridColumn={`${start} / span ${span}`}
+        gridColumn={`${start === 1 ? '1' : 'auto'} / span ${getSpan(
+          col,
+          breakpointIndex
+        )}`}
         whiteSpace='nowrap'
         overflow='hidden'
         textOverflow='ellipsis'
-        key={key}
+        key={`${idx}-${start}`}
         onClick={() => setSelectedId(id !== selectedId ? id : null)}
+        GridRowStart
       >
         {text}
       </Box>
@@ -60,7 +108,7 @@ const DataGrid = ({ columns, data }) => {
   const renderFooter = () => {
     return (
       <Flex
-        bg='gray.200'
+        bg={frameColor}
         px={2}
         py={1}
         minWidth={0}
@@ -98,8 +146,10 @@ const DataGrid = ({ columns, data }) => {
     let colStart = 1
 
     columns.forEach((col) => {
-      headerCols.push(renderHeaderColumn(col.text, colStart, col.span))
-      colStart += col.span
+      if (getSpan(col, breakpointIndex) > 0) {
+        headerCols.push(renderHeaderColumn(colStart, col))
+        colStart += col.span
+      }
     })
 
     return headerCols
@@ -107,19 +157,18 @@ const DataGrid = ({ columns, data }) => {
 
   const renderDataRow = (rec, idx) => {
     let colStart = 1
-    // console.log('record id is' + rec.id);
-
     return columns.map((col) => {
-      const row = renderDataColumn(
-        rec.id,
-        rec[col.dataIndex],
-        colStart,
-        col.span,
-        idx,
-        `${idx}-${colStart}`
-      )
-      colStart += col.span
-      return row
+      if (getSpan(col, breakpointIndex) > 0) {
+        const row = renderDataColumn(
+          colStart,
+          col,
+          rec.id,
+          rec[col.dataIndex],
+          idx
+        )
+        colStart += col.span
+        return row
+      }
     })
   }
 
@@ -127,17 +176,15 @@ const DataGrid = ({ columns, data }) => {
     return data.map((rec, idx) => renderDataRow(rec, idx))
   }
 
+  console.log(totalSpan)
+
   return (
     <Grid
       gridTemplateColumns={`repeat(${totalSpan}, 1fr [col-start])`}
-      borderRadius={8}
-      border='1px'
-      borderColor='gray.200'
       overflow='hidden'
       minHeight={0}
       minWidth={0}
-      mx={6}
-      my={2}
+      {...rest}
     >
       {renderHeader()}
       {renderRows(currentData())}

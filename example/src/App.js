@@ -17,12 +17,12 @@ const columns = [
   {
     text: 'Email',
     dataIndex: 'email',
-    span: 4
+    span: [0, 4, 4, 4]
   },
   {
     text: 'City',
     dataIndex: 'city',
-    span: 2
+    span: [0, 0, 2, 2]
   }
 ]
 
@@ -34,7 +34,17 @@ export default function App() {
         <Text textAlign='center' fontSize='sm'>
           Simple data grid with local pagination using Chakra UI
         </Text>
-        <DataGrid columns={columns} data={data} />
+        <DataGrid
+          // Column definition and data
+          columns={columns}
+          data={data}
+          // Chakra UI props forwarded to <Grid> component
+          mx={[0, 4, 6, 8]}
+          my={[0, 2, 2, 2]}
+          borderRadius={8}
+          border='1px'
+          borderColor='yellow.400'
+        />
       </div>
     </ThemeProvider>
   )
