@@ -29,12 +29,9 @@ const useChakraBreakpoints = () => {
   }
 
   useEffect(() => {
-    const handleResize = () => {
-      getCurrentBreakpointIndex()
-    }
-
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
+    getCurrentBreakpointIndex()
+    window.addEventListener('resize', getCurrentBreakpointIndex)
+    return () => window.removeEventListener('resize', getCurrentBreakpointIndex)
   }, [])
 
   return { breakpointIndex }
