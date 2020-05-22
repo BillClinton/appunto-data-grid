@@ -1,6 +1,12 @@
 import React from 'react'
 import { ThemeProvider, CSSReset, Text } from '@chakra-ui/core'
-import { DataGrid } from 'appunto-data-grid'
+import {
+  DataGrid,
+  GridContextProvider,
+  GridHeader,
+  GridRows,
+  GridFooter
+} from 'appunto-data-grid'
 import data from './mock-data.json'
 
 const columns = [
@@ -31,10 +37,7 @@ export default function App() {
     <ThemeProvider>
       <CSSReset />
       <div className='App'>
-        <Text textAlign='center' fontSize='sm'>
-          Simple data grid with local pagination using Chakra UI
-        </Text>
-        <DataGrid
+        <GridContextProvider
           // Column definition and data
           columns={columns}
           data={data}
@@ -42,9 +45,13 @@ export default function App() {
           mx={[0, 4, 6, 8]}
           my={[0, 2, 2, 2]}
           borderRadius={8}
-          border='1px'
-          borderColor='yellow.400'
-        />
+          border='2px'
+          borderColor='gray.200'
+        >
+          <GridHeader bg='gray.200' fontWeight='medium' />
+          <GridRows />
+          <GridFooter bg='gray.200' mb='-1px' />
+        </GridContextProvider>
       </div>
     </ThemeProvider>
   )
