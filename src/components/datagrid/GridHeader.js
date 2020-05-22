@@ -1,13 +1,10 @@
 import React, { Fragment, useContext } from 'react'
 import { Box } from '@chakra-ui/core'
-import useChakraBreakpoints from './useChakraBreakpoints'
 import { GridContext } from './GridContext'
 
-const GridHeader = ({ columns }) => {
-  const { getSpan } = useContext(GridContext)
-  const { breakpointIndex } = useChakraBreakpoints()
-  console.log(breakpointIndex)
-
+const GridHeader = (props) => {
+  const { columns, breakpointIndex, getSpan } = useContext(GridContext)
+  console.log(props)
   const renderHeaderColumn = (start, col) => {
     return (
       <Box
@@ -23,6 +20,7 @@ const GridHeader = ({ columns }) => {
         overflow='hidden'
         textOverflow='ellipsis'
         key={`header-col-${start}`}
+        {...props}
       >
         {col.text}
       </Box>
