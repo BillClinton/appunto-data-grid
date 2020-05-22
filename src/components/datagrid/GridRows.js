@@ -1,13 +1,16 @@
 import React, { Fragment, useContext } from 'react'
 import { Box } from '@chakra-ui/core'
-import useChakraBreakpoints from './useChakraBreakpoints'
 import { GridContext } from './GridContext'
 
-const GridRows = ({ columns, data }) => {
-  // const { getSpan } = useGridContext()
-  const { selectedId, setSelectedId, getSpan } = useContext(GridContext)
-  const { breakpointIndex } = useChakraBreakpoints()
-  console.log(breakpointIndex)
+const GridRows = () => {
+  const {
+    columns,
+    data,
+    breakpointIndex,
+    selectedId,
+    setSelectedId,
+    getSpan
+  } = useContext(GridContext)
 
   const getDataColumnBg = (idx, id) => {
     if (id === selectedId) {
