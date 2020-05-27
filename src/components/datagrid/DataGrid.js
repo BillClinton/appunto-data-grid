@@ -1,12 +1,19 @@
-import React from 'react'
-import GridContextProvider from './GridContext'
-import GridBody from './GridBody'
+import React, { useContext, useEffect } from 'react'
+import { Flex } from '@chakra-ui/core'
+import { GridContext } from './GridContext'
 
-const DataGrid = (props) => {
+const DataGrid = ({ columns, data, children, ...rest }) => {
+  const { setColumns, setData } = useContext(GridContext)
+
+  useEffect(() => {
+    setColumns(columns)
+    setData(data)
+  }, [columns, data])
+
   return (
-    <GridContextProvider>
-      <GridBody {...props} />
-    </GridContextProvider>
+    <Flex direction='column' {...rest}>
+      {children}
+    </Flex>
   )
 }
 
