@@ -1,47 +1,34 @@
-import React, { Fragment, useContext } from 'react'
-import { Box } from '@chakra-ui/core'
+import React, { useContext } from 'react'
+import { Box, Flex, IconButton } from '@chakra-ui/core'
 import { GridContext } from './GridContext'
 
-const GridHeader = (props) => {
-  const { columns, breakpointIndex, getSpan } = useContext(GridContext)
-  console.log(props)
-  const renderHeaderColumn = (start, col) => {
-    return (
-      <Box
-        // bg={frameColor}
-        px={2}
-        py={2}
-        minWidth={0}
-        gridColumn={`${start === 1 ? '1' : 'auto'} / span ${getSpan(
-          col,
-          breakpointIndex
-        )}`}
-        whiteSpace='nowrap'
-        overflow='hidden'
-        textOverflow='ellipsis'
-        key={`header-col-${start}`}
-        {...props}
-      >
-        {col.text}
-      </Box>
-    )
-  }
+const GridHeader = ({ children, actions, ...rest }) => {
+  const { totalSpan } = useContext(GridContext)
 
-  const renderHeader = () => {
-    const headerCols = []
-    let colStart = 1
-
-    columns.forEach((col) => {
-      if (getSpan(col, breakpointIndex) > 0) {
-        headerCols.push(renderHeaderColumn(colStart, col))
-        colStart += col.span
-      }
-    })
-
-    return headerCols
-  }
-
-  return <Fragment>{renderHeader()}</Fragment>
+  return (
+    <Flex
+      px={2}
+      py={1}
+      minWidth={0}
+      justifyContent='space-between'
+      gridColumn={`1 / span ${totalSpan}`}
+      overflow='hidden'
+      {...rest}
+    >
+      <Box>{children}</Box>
+      {actions ? <Box>{actions}</Box> : ''}
+      {/* {actions &&
+        actions.map((action, idx) => (
+          <IconButton
+            key={idx}
+            variant='ghost'
+            aria-label={action.text}
+            icon={action.icon}
+            onClick={action.onClick}
+          />
+        ))} */}
+    </Flex>
+  )
 }
 
 export default GridHeader
