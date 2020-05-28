@@ -40,7 +40,7 @@ const RemoteStoreProvider = (props) => {
   }, [page, perPage])
 
   const store = {
-    collection: state.context.collection.data,
+    collection: state.context.collection,
     item: state.context.item,
     message: state.context.message,
     matchState: state.matches,
