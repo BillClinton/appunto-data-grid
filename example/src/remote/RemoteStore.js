@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react'
-import ApiMachine from '../ApiMachine'
+import ApiMachine from './ApiMachine'
 import { useMachine } from '@xstate/react'
 
 export const RemoteStore = createContext()
