@@ -63,17 +63,14 @@ const GridRows = ({ actions, selectedBg, stripeBg, isLoading }) => {
       }
     })
 
-    if (actions) {
-      return row.concat(
-        <Box
-          gridColumn={`${colStart} / span 1`}
-          {...getDataColumnBg(rowIndex, rec.id)}
-        >
-          {actions}
-        </Box>
-      )
-    }
-    return row
+    return row.concat(
+      <Box
+        gridColumn={`${colStart} / span 1`}
+        {...getDataColumnBg(rowIndex, rec.id)}
+      >
+        {actions}
+      </Box>
+    )
   }
 
   const renderRows = () => {
