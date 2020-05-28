@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Flex, IconButton, Text, useToast } from '@chakra-ui/core'
+import { Flex, IconButton, Image, Text, useToast } from '@chakra-ui/core'
 import {
   GridContext,
   GridContextProvider,
@@ -29,9 +29,19 @@ const columns = [
     span: [0, 4, 4, 4]
   },
   {
-    text: 'City',
-    dataIndex: 'city',
-    span: [0, 0, 2, 2]
+    text: 'Avatar',
+    dataIndex: 'avatar',
+    span: [0, 0, 2, 2],
+    renderer: (val, rec) => {
+      return (
+        <Image
+          size='24px'
+          objectFit='cover'
+          src={val}
+          alt={`${rec.first_name} ${rec.last_name}`}
+        />
+      )
+    }
   }
 ]
 

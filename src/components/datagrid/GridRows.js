@@ -52,11 +52,13 @@ const GridRows = ({ actions, selectedBg, stripeBg, isLoading }) => {
     let colStart = 1
     const row = columns.map((col) => {
       if (getSpan(col, breakpointIndex) > 0) {
+        const val = rec[col.dataIndex]
+        const display = col.renderer ? col.renderer(val, rec) : val
         const dataColumn = renderDataColumn(
           colStart,
           col,
           rec.id,
-          rec[col.dataIndex],
+          display,
           rowIndex
         )
         colStart += col.span
