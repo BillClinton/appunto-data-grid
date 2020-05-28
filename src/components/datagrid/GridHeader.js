@@ -15,6 +15,7 @@ const GridHeader = ({ children, actions, ...rest }) => {
       overflow='hidden'
       {...rest}
     >
+      <Box></Box>
       <Box>{children}</Box>
       {actions ? <Box>{actions}</Box> : ''}
       {/* {actions &&
