@@ -58,16 +58,20 @@ const RemoteGrid = () => {
 
   const rowActions = [
     <IconButton
-      aria-label='Record actions'
-      variant='ghost'
-      icon='drag-handle'
+      aria-label='Edit this record'
+      variant='solid'
+      variantColor='blue'
+      icon='edit'
       onClick={store.refresh}
+    />,
+    <IconButton
+      aria-label='Delete this record'
+      variant='solid'
+      variantColor='red'
+      icon='delete'
+      onClick={(e, rec) => setCondemnedRecord(rec)}
     />
   ]
-
-  // const headerActions = [
-  //   <IconButton aria-label='Refresh data' variant='ghost' icon='repeat' />
-  // ]
 
   useEffect(() => {
     if (store.failure) {
@@ -90,11 +94,6 @@ const RemoteGrid = () => {
       })
     }
   }, [store.failure, store, toast])
-
-  if (store.matchState('collection.success')) {
-    console.log('STATE: SUCCESS')
-  }
-  console.log(data)
 
   return (
     <>
