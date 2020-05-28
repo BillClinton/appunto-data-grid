@@ -35,6 +35,7 @@ const ApiMachine = (entity) => {
       type: 'parallel',
       context: {
         collection: [],
+        meta: {},
         item: null,
         message: null
       },
@@ -235,7 +236,8 @@ const ApiMachine = (entity) => {
       actions: {
         setGetCollectionResult: assign((ctx, event) => {
           console.log(event.data)
-          return { collection: event.data.data }
+          const { data, ...rest } = event.data.data
+          return { collection: data, meta: { ...rest } }
         }),
         setGetItemResult: assign((ctx, event) => {
           return { item: event.data.data }
