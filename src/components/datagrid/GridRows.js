@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { Box, Flex, Grid, Spinner } from '@chakra-ui/core'
 import { GridContext } from './GridContext'
+import GridButtonColumn from './GridButtonColumn'
 
 const GridRows = ({ actions, selectedBg, stripeBg, isLoading }) => {
   const {
@@ -68,7 +69,7 @@ const GridRows = ({ actions, selectedBg, stripeBg, isLoading }) => {
         gridColumn={`${colStart} / span 1`}
         {...getDataColumnBg(rowIndex, rec.id)}
       >
-        {actions}
+        {actions ? <GridButtonColumn actions={actions} record={rec} /> : null}
       </Box>
     )
   }
