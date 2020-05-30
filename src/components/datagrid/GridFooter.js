@@ -1,12 +1,9 @@
 import React, { useContext } from 'react'
 import { Flex, IconButton, Text } from '@chakra-ui/core'
-import usePagination from './usePagination'
 import { GridContext } from './GridContext'
 
-const GridFooter = (props) => {
-  const { totalSpan, pageNext, pagePrev, currentPage, maxPage } = useContext(
-    GridContext
-  )
+const GridFooter = ({ page, pageTotal, pagePrev, pageNext, ...rest }) => {
+  const { totalSpan } = useContext(GridContext)
 
   return (
     <Flex
@@ -17,7 +14,7 @@ const GridFooter = (props) => {
       justifyContent='space-between'
       gridColumn={`1 / span ${totalSpan}`}
       overflow='hidden'
-      {...props}
+      {...rest}
     >
       <IconButton
         aria-label='previous page'
@@ -29,7 +26,7 @@ const GridFooter = (props) => {
         prev
       </IconButton>
       <Text mt={2} fontSize='sm'>
-        page {currentPage} of {maxPage}
+        page {page} of {pageTotal}
       </Text>
       <IconButton
         aria-label='next page'
