@@ -1,7 +1,7 @@
 {
   "name": "appunto-data-grid",
-  "version": "1.0.0",
-  "description": "A responsive data grid for managing RESTful APIs using React, Context/Hooks, Chakra UI, and XState.",
+  "version": "1.0.1",
+  "description": "A responsive data grid for managing RESTful APIs using React, Context/Hooks, and Chakra UI.",
   "author": "BillClinton",
   "license": "MIT",
   "repository": "BillClinton/appunto-data-grid",
