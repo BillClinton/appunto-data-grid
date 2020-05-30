@@ -6,6 +6,7 @@ import GridHeader from './components/datagrid/GridHeader'
 import GridColumnHeader from './components/datagrid/GridColumnHeader'
 import GridRows from './components/datagrid/GridRows'
 import GridFooter from './components/datagrid/GridFooter'
+import useLocalPager from './components/datagrid/useLocalPager'
 
 export {
   GridContext,
@@ -14,5 +15,6 @@ export {
   GridHeader,
   GridColumnHeader,
   GridRows,
-  GridFooter
+  GridFooter,
+  useLocalPager
 }
