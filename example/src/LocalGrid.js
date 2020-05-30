@@ -55,8 +55,8 @@ const LocalGrid = () => {
             Simple data grid with local data
           </Text>
         </GridHeader>
-        <GridColumnHeader bg='gray.200' fontWeight='medium' />
-        <GridRows selectedBg='yellow.100' stripeBg='gray.50' />
+        <GridColumnHeader bg='orange.200' fontWeight='medium' />
+        <GridRows selectedBg='orange.100' stripeBg='blue.50' />
         <GridFooter
           bg='blue.400'
           color='gray.100'
