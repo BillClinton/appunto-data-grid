@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Flex, IconButton, Image, Text, useToast } from '@chakra-ui/core'
+import { IconButton, Image, Text, useToast } from '@chakra-ui/core'
 import {
-  GridContext,
-  GridContextProvider,
   DataGrid,
   GridHeader,
   GridColumnHeader,
@@ -46,7 +44,6 @@ const columns = [
 ]
 
 const RemoteGrid = () => {
-  const { selectedId } = useContext(GridContext)
   const { store } = useContext(RemoteStore)
   const toast = useToast()
   const [condemnedRecord, setCondemnedRecord] = useState(null)
@@ -87,11 +84,11 @@ const RemoteGrid = () => {
     if (store.failure) {
       let title = 'An error occurred.'
       if (store.matchState('collection.failure')) {
-        title = 'Error attempting to load authors.'
+        title = 'Error attempting to load data.'
         store.send({ to: 'collection', type: 'reset' })
       }
       if (store.matchState('destroy.failure')) {
-        title = 'Error attempting to delete author.'
+        title = 'Error attempting to delete data.'
         store.send({ to: 'destroy', type: 'reset' })
       }
 
@@ -107,43 +104,45 @@ const RemoteGrid = () => {
 
   return (
     <>
-      <Text textAlign='center' fontSize='sm'>
-        Data grid with Remote data source and remote pagination
-      </Text>
-      <>
-        {condemnedRecord && (
-          <ConfirmDeleteModal
-            title='Remove person'
-            deleteCondemned={deleteRecord}
-            clearCondemned={() => setCondemnedRecord(null)}
-          >
-            Are you sure you wish to remove <i>{condemnedRecord.name}</i>
-          </ConfirmDeleteModal>
-        )}
-        <DataGrid
-          columns={columns}
-          data={data}
-          mx={[0, 4, 6, 8]}
-          my={[0, 2, 2, 2]}
-          borderRadius={8}
-          border='2px'
-          borderColor='gray.200'
+      {condemnedRecord && (
+        <ConfirmDeleteModal
+          title='Remove person'
+          deleteCondemned={deleteRecord}
+          clearCondemned={() => setCondemnedRecord(null)}
         >
-          <GridHeader bg='gray.200' actions={headerActions}>
-            <Text fontSize='lg' fontWeight='medium' color='gray.600' mt={1}>
-              Data grid with Remote data source and remote pagination
-            </Text>
-          </GridHeader>
-          <GridColumnHeader bg='gray.100' fontWeight='medium' />
-          <GridRows
-            selectedBg='yellow.100'
-            stripeBg='gray.50'
-            actions={rowActions}
-            isLoading={store.matchState('collection.pending')}
-          />
-          <GridFooter bg='gray.200' mb='-1px' />
-        </DataGrid>
-      </>
+          Are you sure you wish to remove <i>{condemnedRecord.name}</i>
+        </ConfirmDeleteModal>
+      )}
+      <DataGrid
+        columns={columns}
+        data={data}
+        mx={[0, 4, 6, 8]}
+        my={[0, 2, 2, 2]}
+        borderRadius={8}
+        border='2px'
+        borderColor='gray.200'
+      >
+        <GridHeader bg='gray.200' actions={headerActions}>
+          <Text fontSize='lg' fontWeight='medium' color='gray.600' mt={1}>
+            Data grid with Remote data source and remote pagination
+          </Text>
+        </GridHeader>
+        <GridColumnHeader bg='gray.100' fontWeight='medium' />
+        <GridRows
+          selectedBg='yellow.100'
+          stripeBg='gray.50'
+          actions={rowActions}
+          isLoading={store.matchState('collection.pending')}
+        />
+        <GridFooter
+          bg='gray.200'
+          mb='-1px'
+          pageNext={store.pageNext}
+          pagePrev={store.pagePrev}
+          page={store.page}
+          pageTotal={store.pageTotal}
+        />
+      </DataGrid>
     </>
   )
 }

@@ -6,19 +6,18 @@ export const RemoteStore = createContext()
 
 const RemoteStoreProvider = (props) => {
   const apiMachine = ApiMachine('users')
-  const [state, send, service] = useMachine(apiMachine)
+  const [state, send] = useMachine(apiMachine)
   const [page, setPage] = useState(1)
-  const [perPage, setPerPage] = useState(10)
+  const [perPage] = useState(10)
+  const [pageTotal, setPageTotal] = useState(10)
+  const pagePrev = () => setPage(Math.max(page - 1, 1))
+  const pageNext = () => setPage(Math.min(page + 1, pageTotal))
 
   useEffect(() => {
-    const subscription = service.subscribe((state) => {
-      // simple state logging
-      console.log(state.value)
-      // console.log(state.context);
-    })
-
-    return subscription.unsubscribe
-  }, [service]) // note: service should never change
+    if (state.context.meta.total_pages) {
+      setPageTotal(state.context.meta.total_pages)
+    }
+  }, [state.context.meta])
 
   const create = (data) => send({ type: 'post', data })
   const readCollection = (params) => send({ type: 'getCollection', params })
@@ -51,7 +50,12 @@ const RemoteStoreProvider = (props) => {
     update,
     destroy,
     refresh,
-    resetDelete
+    resetDelete,
+    page,
+    perPage,
+    pageTotal,
+    pagePrev,
+    pageNext
   }
 
   return (
