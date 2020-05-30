@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState } from 'react'
 import useChakraBreakpoints from './useChakraBreakpoints'
-// import usePagination from './usePagination'
 
 export const GridContext = createContext()
 
@@ -14,10 +13,6 @@ const GridContextProvider = ({ columns: colCfg, data: gridData, children }) => {
   const [columns, setColumns] = useState(colCfg)
   const [data, setData] = useState(gridData)
   const { breakpointIndex } = useChakraBreakpoints()
-  // const { next, prev, currentData, currentPage, maxPage } = usePagination(
-  //   data,
-  //   10
-  // )
 
   const getSpan = (col, breakpointIndex) => {
     return Array.isArray(col.span) ? col.span[breakpointIndex] : col.span
@@ -39,10 +34,6 @@ const GridContextProvider = ({ columns: colCfg, data: gridData, children }) => {
     setSelectedId,
     getSpan,
     totalSpan
-    // pageNext: next,
-    // pagePrev: prev,
-    // currentPage,
-    // maxPage
   }
 
   return (
