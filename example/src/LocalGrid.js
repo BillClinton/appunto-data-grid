@@ -1,12 +1,12 @@
 import React from 'react'
 import { Text } from '@chakra-ui/core'
 import {
-  GridContextProvider,
   DataGrid,
   GridHeader,
   GridColumnHeader,
   GridRows,
-  GridFooter
+  GridFooter,
+  useLocalPager
 } from 'appunto-data-grid'
 import data from './mock-data.json'
 
@@ -34,24 +34,38 @@ const columns = [
 ]
 
 const LocalGrid = () => {
+  const { pageNext, pagePrev, pageData, page, pageTotal } = useLocalPager(
+    data,
+    10
+  )
+
   return (
     <>
-      <Text textAlign='center' fontSize='sm'>
-        Simple data grid with local data
-      </Text>
       <DataGrid
         columns={columns}
-        data={data}
+        data={pageData()}
         mx={[0, 4, 6, 8]}
         my={[0, 2, 2, 2]}
         borderRadius={8}
         border='2px'
-        borderColor='gray.200'
+        borderColor='blue.400'
       >
-        <GridHeader bg='gray.200'>Simple data grid with local data</GridHeader>
+        <GridHeader bg='blue.400'>
+          <Text fontSize='md' fontWeight='medium' color='gray.100' mt={0}>
+            Simple data grid with local data
+          </Text>
+        </GridHeader>
         <GridColumnHeader bg='gray.200' fontWeight='medium' />
         <GridRows selectedBg='yellow.100' stripeBg='gray.50' />
-        <GridFooter bg='gray.200' mb='-1px' />
+        <GridFooter
+          bg='blue.400'
+          color='gray.100'
+          mb='-1px'
+          pageNext={pageNext}
+          pagePrev={pagePrev}
+          page={page}
+          pageTotal={pageTotal}
+        />
       </DataGrid>
     </>
   )
