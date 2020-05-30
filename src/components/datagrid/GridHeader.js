@@ -15,19 +15,9 @@ const GridHeader = ({ children, actions, ...rest }) => {
       overflow='hidden'
       {...rest}
     >
-      <Box></Box>
+      <Box> </Box>
       <Box>{children}</Box>
-      {actions ? <Box>{actions}</Box> : ''}
-      {/* {actions &&
-        actions.map((action, idx) => (
-          <IconButton
-            key={idx}
-            variant='ghost'
-            aria-label={action.text}
-            icon={action.icon}
-            onClick={action.onClick}
-          />
-        ))} */}
+      <Box>{actions}</Box>
     </Flex>
   )
 }
