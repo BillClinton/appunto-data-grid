@@ -9,9 +9,7 @@ const GridColumnHeader = (props) => {
   const renderHeaderColumn = (start, col) => {
     return (
       <Box
-        // bg={frameColor}
         px={2}
-        // py={2}
         minWidth={0}
         gridColumn={`${start === 1 ? '1' : 'auto'} / span ${getSpan(
           col,
@@ -46,14 +44,14 @@ const GridColumnHeader = (props) => {
         }
       })
 
-    headerCols.push(<Box {...props}></Box>)
+    headerCols.push(<Box key='header-col-actions-spacer' {...props} />)
 
     return headerCols
   }
 
   return (
     <Grid
-      gridTemplateColumns={`repeat(${totalSpan}, 1fr [col-start]) 40px`}
+      gridTemplateColumns={`repeat(${totalSpan}, 1fr [col-start]) 28px`}
       overflow='hidden'
       minWidth={0}
     >
