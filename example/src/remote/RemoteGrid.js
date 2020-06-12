@@ -110,7 +110,8 @@ const RemoteGrid = () => {
           deleteCondemned={deleteRecord}
           clearCondemned={() => setCondemnedRecord(null)}
         >
-          Are you sure you wish to remove <i>{condemnedRecord.name}</i>
+          Are you sure you wish to remove{' '}
+          {`${condemnedRecord.first_name} ${condemnedRecord.last_name}`}
         </ConfirmDeleteModal>
       )}
       <DataGrid
