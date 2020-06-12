@@ -68,6 +68,7 @@ const GridRows = ({ actions, selectedBg, stripeBg, isLoading }) => {
 
     return row.concat(
       <Box
+        key={`${rowIndex}-${colStart}`}
         gridColumn={`${colStart} / span 1`}
         {...getDataColumnBg(rowIndex, rec.id)}
       >
@@ -88,7 +89,7 @@ const GridRows = ({ actions, selectedBg, stripeBg, isLoading }) => {
         <Spinner
           thickness='4px'
           speed='0.65s'
-          emptyColor='yellow.500'
+          emptyColor='blue.500'
           color='gray.100'
           size='xl'
           top='48%'
@@ -97,7 +98,7 @@ const GridRows = ({ actions, selectedBg, stripeBg, isLoading }) => {
         />
       ) : null}
       <Grid
-        gridTemplateColumns={`repeat(${totalSpan}, 1fr [col-start]) 40px`}
+        gridTemplateColumns={`repeat(${totalSpan}, 1fr [col-start]) 28px`}
         width='100%'
         overflow='hidden'
         minWidth={0}
