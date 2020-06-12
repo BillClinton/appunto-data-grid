@@ -1,51 +1,72 @@
 import React, { useContext } from 'react'
-import {
-  Flex,
-  IconButton,
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from '@chakra-ui/core'
+import { Box, Flex, IconButton } from '@chakra-ui/core'
 import { GridContext } from './GridContext'
 
 const GridButtonColumn = ({ actions, record }) => {
-  const { selectedId, setSelectedId } = useContext(GridContext)
+  const { setSelectedId } = useContext(GridContext)
   const [isOpen, setIsOpen] = React.useState(false)
-  const firstFieldRef = React.useRef(null)
-  const open = () => setIsOpen(true)
   const close = () => setIsOpen(false)
+  const toggle = () => setIsOpen(!isOpen)
 
   if (isOpen) {
     setSelectedId(record.id)
   }
 
+  const drawerWidth = actions.length * 40
+
+  const renderActions = () => {
+    return (
+      <Flex width='100%' alignContent='stretch'>
+        {actions &&
+          actions.map((action, idx) => {
+            return React.cloneElement(action, {
+              key: idx,
+              onClick: (e) => {
+                action.props.onClick(e, record)
+                close()
+              }
+            })
+          })}
+      </Flex>
+    )
+  }
+
   return (
-    <Popover
-      isOpen={isOpen}
-      initialFocusRef={firstFieldRef}
-      onOpen={open}
-      onClose={close}
-      placement='left'
-      closeOnBlur={false}
-      usePortal
-    >
-      <PopoverTrigger>
-        <IconButton size='sm' icon='drag-handle' variant='ghost' />
-      </PopoverTrigger>
-      <PopoverContent zIndex={4} p={0}>
-        <Flex width='100%' alignContent='stretch'>
-          {actions &&
-            actions.map((action) => {
-              return React.cloneElement(action, {
-                onClick: (e) => {
-                  action.props.onClick(e, record)
-                  close()
-                }
-              })
-            })}
-        </Flex>
-      </PopoverContent>
-    </Popover>
+    <Box position='relative'>
+      {isOpen ? (
+        <Box
+          position='absolute'
+          top='-4px'
+          transition='left 400ms, width 1000ms'
+          transformOrigin={`${drawerWidth}px center`}
+          overflow='hidden'
+          whiteSpace='nowrap'
+          left={`-${drawerWidth}px`}
+          width={`-${drawerWidth}px`}
+        >
+          {renderActions()}
+        </Box>
+      ) : (
+        <Box
+          position='absolute'
+          top='-4px'
+          transition='left 400ms, width 1000ms'
+          transformOrigin={`${drawerWidth}px center`}
+          overflow='hidden'
+          whiteSpace='nowrap'
+          left='40px'
+          width='0px'
+        >
+          {renderActions()}
+        </Box>
+      )}
+      <IconButton
+        size='sm'
+        icon='drag-handle'
+        variant='ghost'
+        onClick={toggle}
+      />
+    </Box>
   )
 }
 
