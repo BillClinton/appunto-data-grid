@@ -17,7 +17,12 @@ const GridHeader = ({ children, actions, ...rest }) => {
     >
       <Box> </Box>
       <Box>{children}</Box>
-      <Box>{actions}</Box>
+      <Box>
+        {actions &&
+          actions.map((action, idx) =>
+            React.cloneElement(action, { key: idx })
+          )}
+      </Box>
     </Flex>
   )
 }
